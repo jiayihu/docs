@@ -45,7 +45,7 @@ The following are the most important commands in Now CLI:
       <br/><br/>
       The <InlineCode>[path]</InlineCode> can either be a file (leads to a static deployment) or
       a directory (the deployment type will be determined depending
-      on the contents).
+      on the contents). If you provide <InlineCode>[path]</InlineCode>, you'll need to use the parameter <InlineCode>--local-config=../now.json</InlineCode> or just <InlineCode>-A ../now.json</InlineCode> to tell the CLI where to read the configuration.
       <br/><br/>
       If you want to deploy multiple paths at
       once, <GenericLink href="#deploying-multiple-projects-at-once">read this</GenericLink>.
