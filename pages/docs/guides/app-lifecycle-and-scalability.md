@@ -58,6 +58,6 @@ The minimum and the maximum can be equal, which means the application will never
 
 Instances are reported as unique instance identifiers and their corresponding instance specific access URLs. An instance id is tied to a specific occurrence of the deployment, so if you scale an application up and down, the instance the removed and added instances will have different instance ids. Similarly, if an instance restarts due to, for example, an error, the instance id will remain the same.
 
-When an instance restarts for any reason (or exit code), we automatically restart the instance, so supervisor-like wrappers are not necessary. For example neither `forever`, `nodemon`, or `pm` are not necessary for an application to always stay running.
+When an instance restarts for any reason (or exit code), we automatically restart the instance, so supervisor-like wrappers are not necessary. For example `forever`, `nodemon`, and `pm` are not necessary for an application to always stay running.
 
 export default withDoc({...meta})(({children}) => <>{children}</>)

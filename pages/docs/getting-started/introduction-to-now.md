@@ -9,7 +9,7 @@ import Now from '../../../components/now/now'
 
 export const meta = {
   title: 'Introduction to Now',
-  description: 'A quick-start guide to deploying your Node.js, Docker, or static apps with Now and what you can do with your deployments',
+  description: 'A quick-start guide to deploying your dynamic and static apps with Now and what you can do with your deployments.',
   date: '30 July 2017',
   authors: [leo, arunoda],
   editUrl: 'pages/docs/getting-started/introduction-to-now.md'
@@ -64,8 +64,7 @@ First, create a directory called `my-web-app` and add the following content to a
   </body>
 </html>
 ```
-
-> You can also use a [Node.js app](https://github.com/zeit/nextgram) or an [app with a Dockerfile](https://github.com/now-examples/cobol-hello-world) instead of this simple static app.
+> Alternatively, use [Docker to deploy](https://github.com/zeit/now-examples#serverless-docker-v2) your dynamic applications, or use a `Dockerfile` to instruct Now [build an deploy your static applications](/docs/static-deployments/builds/building-with-now).
 
 After you have added the content, change to the `my-web-app` directory in your terminal and run this command:
 

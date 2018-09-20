@@ -1,74 +1,107 @@
 import withDoc from '../../../lib/with-doc'
 
-import { sergio } from '../../../lib/data/team'
 import Now from '../../../components/now/now'
-import { InternalLink } from '../../../components/text/link'
+import { GenericLink } from '../../../components/text/link'
+import { InlineCode } from '../../../components/text/code'
 import { TerminalInput } from '../../../components/text/terminal'
+import Caption from '../../../components/text/caption'
 
 export const meta = {
-  title: 'Building a Single Page Application with Create React App',
-  description: 'Creating a single page web app with create-react-app and deploying it with Now',
-  date: '23 Feb 2017',
-  authors: [sergio],
-  editUrl: 'pages/docs/examples/create-react-app.md'
+  title: 'Building and Deploying a Single Page Application with Create React App',
+  description: 'Creating a single page web app with Create React App and deploying it with Now',
+  date: '08 September 2018',
+  editUrl: 'pages/docs/examples/create-react-app.md',
+  image: IMAGE_ASSETS_URL + '/docs/examples/create-react-app/twitter-card.png'
 }
 
-[Create React App](https://github.com/facebookincubator/create-react-app) is a boilerplate tool used to create Single Page Applications with React.js without build configuration. Facebook created CRA and made it the official way to start a new React application.
+[Create React App](https://github.com/facebookincubator/create-react-app) (CRA) is a boilerplate tool used to create static single-page [React](https://reactjs.org/) applications without build configuration.
 
-In this page, we're going to focus on how to deploy a Single Page Application made with Create React App to <Now color="#000"/>. If you want to learn how to use this boilerplate tool we recommend you to read their [repository's README](https://github.com/facebookincubator/create-react-app/blob/master/README.md).
+The focus of this page will be on how to deploy an application built with Create React app.
 
-## Type of deployment
+## Get Started with Create React App
+To get started, use npm's `npx` command to run the `create-react-app` module which will create a React app in a specified directory. For example, the following command, when entered in a terminal with npm installed, will create a React application within the `my-app` directory:
+<TerminalInput>
+npx create-react-app my-app
+</TerminalInput>
+<Caption>Running `create-react-app` to build an application in the `my-app` directory with `npx`.</Caption>
 
-&#8203;<Now color="#000"/> let us deploy a simple <InternalLink href="/docs/examples/static">static site</InternalLink> without any configuration, and even if a Single Page Application could be considered a static site (since we don't need server side code) is not exactly one and has one special requirement, the routing is handled client side. That means every URL which doesn't resolve to a static file should return the `index.html` file so the application can decide if it's a handled URL or not.
+With an initialized application in the `my-app` directory, Create React App has provided a ready-made environment to pick up and go.
 
-Because of this special requirement, we can't just do a <InternalLink href="/docs/getting-started/deployment#static-deployment">static deployment</InternalLink> and we need to rely on a <InternalLink href="/docs/getting-started/deployment#node.js-deployment">Node.js</InternalLink> or <InternalLink href="/docs/getting-started/deployment#docker-deployment">Docker</InternalLink> deployment. In this case, we're going to use a Node.js one.
+Built-in commands provide easy development and production tools, such as running `yarn start` for a local development server, `yarn test` for a test-runner, or `yarn build` to export the app statically.
 
-## Setup
+For alternative methods of installing and a more in-depth guide for how Create React App can help to get started quickly with React, read [the documentation](https://github.com/facebook/create-react-app#creating-an-app) for it.
 
-We're going to need an HTTP server for our application, there are many possible ones including Apache, NGINX, express-static, etc. But in our case, we're going to use [serve](https://github.com/zeit/serve) and install it as a dependency in our project.
+With a freshly created React app, and any changes to is after, it is now time to deploy the app.
 
-<TerminalInput>npm install --save serve</TerminalInput>
+## Deploying the App with Now
+For production builds, Create React App provides a command `build`, within the `package.json` file, that exports the React application statically. Now supports [static applications](/docs/static-deployments/introduction-and-deploying) with no need for additional config. However, in the case of Create React App, it is possible to [build the app on Now](/docs/static-deployments/builds/building-with-now), as well as deploy it live.
 
-Then we need to add a script to run this server because Create React App use `start` to run the development server we can decide between changing the default `start` script to `dev` and run **serve** using `start` or we can define a new script called `now-start`.
+### Preparing for Now
+There are a few things to configure to best deploy a React application built with Create React App.
 
-This new script is going to be used by <Now color="#000"/> to run our Node.js application instead of the usual `start` script, that way we can continue with the usual workflow of Create React App. And our `now-start` script can run the following line.
+Firstly, the app is a Single Page Application. This means that the entire application will run from a single page, in this case, `index.html`. To help with this, Now supports a [`rewrites` configuration option](/docs/static-deployments/configuration#rewrites-(array)), allowing a method of redirecting users from one path to another.
 
-<TerminalInput>serve --single ./build</TerminalInput>
+This configuration option will go in a `now.json` configuration file under the `static` property. We will also set the `type` of deployment to `static` to let Now know that we want a static deployment with [a build step](#instructing-the-build).
 
-The `--single` (or just `-s`) option is going to tell **serve** to run the HTTP server to support a Single Page Application, this means every request which can't be resolved to a static file is going to resolve with the `index.html` so we can handle routing client side.
-
-The `./build` path is going to define which directory we want our HTTP server to actually serve.
-
-After this the `package.json` must look like this (for a default Create React App project):
-
-```
+```json
 {
-  "name": "project-name",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-scripts": "1.0.13",
-    "serve": "^6.0.6"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "now-start": "serve --single ./build",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "type": "static",
+  "static": {
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
 ```
+<Caption>A <InlineCode>now.json</InlineCode> configuration setting deployment type as <InlineCode>static</InlineCode> and enabling the rewriting of all paths to point to <InlineCode>index.html</InlineCode>.</Caption>
 
-## Deploying the application
-Once we did that we can deploy our application with the following command:
+Setting the deployment type to `static` is essential due to the method of [building the app](#instructing-the-build) on Now.
 
+Using a `Dockerfile` that contains build instructions, Now will be able to build the app on deployment, as well as running any tests, stopping the build if they fail.
+
+### Instructing the Build
+To build an application created with Create React App when deploying, create a `Dockerfile` containing the build instructions like the following:
+
+```
+# Use Node.js version 10
+FROM mhart/alpine-node:10
+
+# Set the working directory
+WORKDIR /usr/src
+
+# Copy package manager files to the working directory and run install
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# Copy all files to the working directory
+COPY . .
+
+# Run tests
+RUN CI=true yarn test
+
+# Build the app and move the resulting build to the `/public` directory
+RUN yarn build
+RUN mv ./build /public
+```
+<Caption>A <InlineCode>Dockerfile</InlineCode> containing the build instructions for a React app created with Create React App.</Caption>
+
+Additionally, we can whitelist specific files or directories so that no unnecessary files are deployed with the build, using a `.dockerignore` file:
+
+```
+*
+!src
+!public
+!package.json
+!yarn.lock
+```
+<Caption>A <InlineCode>.dockerignore</InlineCode> file that is whitelisting the <InlineCode>src</InlineCode> and <InlineCode>public</InlineCode> directories and package manager files.</Caption>
+
+
+### Deploying
+With the configuration complete, when deploying, Now will recognize the options passed in and build the app as expected. All that is left to do is deploy:
 <TerminalInput>now</TerminalInput>
-
-Once <Now color="#000" /> has finished uploading the files, you'll see a URL that points to your freshly created Single Page Application then is going to run `npm run build` to build our application code (_we don't need to do build in our local machine_) and after that start our HTTP server with `npm run now-start`.
-
-But in the case of a real application (not used for testing purposes), you would now have to <InternalLink href="/docs/features/aliases">assign an alias</InternalLink> to it.
 
 export default withDoc({...meta})(({children}) => <>{children}</>)

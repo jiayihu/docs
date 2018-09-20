@@ -8,8 +8,9 @@ const Caption = ({ children }) => (
         p {
           color: #999;
           font-size: 12px;
-          margin: -20px 0 40px 0;
+          margin: -24px 0 40px 0;
           text-align: center;
+          line-height: 2;
         }
       `}
     </style>

@@ -39,7 +39,7 @@ For more information on `now logs`, run the help command with:
   caption="The help command output of the 'now logs' command"
 />
 
-Here's an advance `now logs` command to let you inspect the last 10 HTTP GET requests.
+Here's an advanced `now logs` command to let you inspect the last 10 HTTP GET requests.
 
 <TerminalInput>now logs -a -q "GET" -n 10 my-web-app.com</TerminalInput>
 

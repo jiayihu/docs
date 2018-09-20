@@ -41,8 +41,6 @@ The four different ways to use the `now alias` command are:
 
 Let us explore each method in detail.
 
-> Custom domains are only available for [paid plans](https://zeit.co/pricing). If you want to use a custom domain for your app, you need to [upgrade](https://zeit.co/account/plan) your account.
-
 ---
 
 ## 1. Using a now.sh Domain

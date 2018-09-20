@@ -58,9 +58,10 @@ consists of one or more [data centers](#data-centers):
 
 Currently, these regions are generally available:
 
-- [BRU](https://bru.now.sh) (Brussels, Belgium, Europe)
-- [SFO](https://sfo.now.sh) (San Francisco, California, USA)
+- [BRU](https://bru.now.sh) (Brussels, Belgium, West Europe)
+- [SFO](https://sfo.now.sh) (San Francisco, West US)
 - [GRU](https://gru.now.sh) (São Paulo, Brazil)
+- [IAD](https://iad.now.sh) (Washington DC, East US)
 
 #### Data Centers
 
